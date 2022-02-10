@@ -1,0 +1,23 @@
+{
+  "name": "ct.imagedetection.nodejs",
+  "version": "1.0.0",
+  "description": "Image detection helper API built on NodeJs, Express and MongoDB.",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon ./src/server.js"
+  },
+  "author": "Christopher Tucker",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.25.0",
+    "express": "^4.17.2",
+    "form-data": "^4.0.0",
+    "mongodb": "^4.3.1",
+    "mongoose": "^6.2.0",
+    "multer": "^1.4.4"
+  },
+  "devDependencies": {
+    "dotenv": "^16.0.0",
+    "nodemon": "^2.0.15"
+  }
+}
