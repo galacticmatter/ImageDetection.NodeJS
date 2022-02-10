@@ -24,8 +24,7 @@ const detectObjectsById = async (imageId) => {
   try {
     console.log(`Running detection on image with id ${imageId}`);
     const detections = await httpRequest('GET', uri, null, {
-      'Authorization': `Basic ${IMAGGA.API_AUTHORIZATION}`,
-      'Content-Type': 'application/json'
+      'Authorization': `Basic ${IMAGGA.API_AUTHORIZATION}`
     });
 
     return detections;
