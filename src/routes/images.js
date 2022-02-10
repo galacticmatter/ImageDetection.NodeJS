@@ -26,10 +26,10 @@ router.get('/', (request, response) => {
   let query = {};
 
   // If 'objects' query parameter is passed
-  // add 'objects' query to MongoDB query object
+  // add 'objects' query clause to MongoDB query object
   if (objects && typeof objects === 'string') {
     query['tags'] = {
-      $in: [objects.split(',')]
+      $in: objects.split(',')
     }
   }
 
@@ -127,8 +127,6 @@ router.post('/', uploader.single('image'), async (request, response) => {
       formData.append("image", fs.createReadStream(imagePath));
       const { result } = await detectObjectsByImage(formData, formData.getBoundary());
 
-      console.log('Image response: ', JSON.stringify(result));
-
       // Send Url to detect objects
       if (result) {
         const detections = result.tags;
@@ -159,11 +157,11 @@ router.post('/', uploader.single('image'), async (request, response) => {
       });
 
       response.status(200).json({
-        message: "Successfully saved new image!"
+        message: "Successfully saved new image to MongoDB!"
       });
     })
     .catch(error => {
-      const message = `Error occurred during image(s) retrieval: ${error}`;
+      const message = `Error occurred during image save: ${error}`;
       console.error(message);
       response.status(500).json({
         error: message
