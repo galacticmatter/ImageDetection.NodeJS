@@ -1,7 +1,7 @@
-const axios = require("axios");
+import axios, { AxiosRequestConfig, Method } from 'axios';
 
 // Helper object for Axios requests
-const request = function (method, url, data, headers) {
+const request = (method: string, url: string, data?: any, headers?: any): Promise<any> | boolean => {
 
   if (
     method === '' ||
@@ -12,8 +12,8 @@ const request = function (method, url, data, headers) {
     return false;
   }
 
-  const config = {
-    method: method,
+  const config: AxiosRequestConfig = {
+    method: method as Method,
     url: url,
     data: {},
     headers: {}
@@ -38,4 +38,4 @@ const request = function (method, url, data, headers) {
   })
 }
 
-module.exports = request;
+export default request;

@@ -1,16 +1,17 @@
-require('dotenv').config();
+import "dotenv/config";
+import express from "express";
+import mongoose from "mongoose";
+import { MONGODB, CONFIG } from "./constants/";
+import imagesRouter from "./routes/images";
 
-const express = require("express");
-const mongoose = require("mongoose");
-const { MONGODB, CONFIG } = require("./constants/constants")
-const imagesRouter = require("./routes/images");
+// Initialize Express API
 const api = express();
 
 // Build MongoDB URL
 const uri = `mongodb+srv://${MONGODB.ACCESS_KEY}:${MONGODB.SECRET_KEY}@${MONGODB.URI}`;
 
 // Connect to MongoDB
-mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(uri)
   .then(() => {
     console.log('Successfully connected to database');
   })

@@ -1,5 +1,5 @@
 // MongoDB configuration.
-const MONGODB = Object.freeze({
+export const MONGODB = Object.freeze({
   // MongoDB Access Key.
   ACCESS_KEY: process.env.MONGODB_ACCESS_KEY,
   // MongoDB Secret Key.
@@ -9,7 +9,7 @@ const MONGODB = Object.freeze({
 })
 
 // Imagga API configuration.
-const IMAGGA = Object.freeze({
+export const IMAGGA = Object.freeze({
   // Imagga API key.
   API_KEY: process.env.IMAGGA_API_KEY,
   // Imagga API secret.
@@ -29,7 +29,7 @@ const IMAGGA = Object.freeze({
 })
 
 // API configuration.
-const CONFIG = Object.freeze({
+export const CONFIG = Object.freeze({
   // Default API port.
   API_PORT: 5000,
   // Default image upload folder.
@@ -37,9 +37,3 @@ const CONFIG = Object.freeze({
   // Default file upload limit.
   FILE_SIZE_LIMIT: 1024 * 1024 * 4, // 4 MB
 })
-
-module.exports = {
-  MONGODB,
-  IMAGGA,
-  CONFIG
-}

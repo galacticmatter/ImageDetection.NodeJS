@@ -1,5 +1,5 @@
-const multer = require("multer");
-const { CONFIG } = require("../constants/constants");
+import multer from "multer";
+import { CONFIG } from "../constants"
 
 const storage = multer.diskStorage({
   // Edit the destination folder of the uploaded file.
@@ -13,4 +13,4 @@ const storage = multer.diskStorage({
   }
 })
 
-module.exports = storage;
+export default storage;

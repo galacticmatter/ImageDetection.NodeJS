@@ -1,15 +1,18 @@
-const fs = require("fs");
-const path = require("path");
-const FormData = require("form-data");
-const express = require("express");
-const mongoose = require("mongoose");
-const router = express.Router();
-const multer = require("multer");
-const Image = require("../models/image");
-const storageHelper = require("../helpers/storage");
-const { detectObjectsByImage, filterDetectionsByConfidence } = require("../services/detection");
-const { CONFIG } = require("../constants/constants");
+import fs from "fs";
+import path from "path";
+import FormData from "form-data";
+import express from "express";
+import mongoose from "mongoose";
+import multer from "multer";
+import Image from "../models/image";
+import storageHelper from "../helpers/storage";
+import { detectObjectsByImage, filterDetectionsByConfidence } from "../services/detection";
+import { CONFIG } from "../constants";
+import { IDetection } from "../types/detection";
 const { rootDir } = require("../../.settings.js");
+
+// Initialize router.
+const router = express.Router();
 
 // Configure multer
 const uploader = multer({
@@ -105,8 +108,8 @@ router.get('/:imageId', (request, response) => {
 router.post('/', uploader.single('image'), async (request, response) => {
   const { label, description, runDetection } = request.body;
   const { file } = request;
-  const enableDetection = !!parseInt(runDetection);
-  const imagePath = path.join(`${rootDir}/uploads/${file.filename}`);
+  const enableDetection: boolean = !!parseInt(runDetection);
+  const imagePath: string = path.join(`${rootDir}/uploads/${file.filename}`);
 
   // Create new 'Image' model
   let model = new Image({
@@ -129,7 +132,7 @@ router.post('/', uploader.single('image'), async (request, response) => {
 
       // Send Url to detect objects
       if (result) {
-        const detections = result.tags;
+        const detections: Array<IDetection> = result.tags;
         console.log(`Object detections found: ${detections.length}`);
 
         // Add tags to model if any
@@ -169,4 +172,4 @@ router.post('/', uploader.single('image'), async (request, response) => {
     });
 })
 
-module.exports = router;
+export default router;

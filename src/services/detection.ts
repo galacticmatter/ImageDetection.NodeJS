@@ -1,10 +1,9 @@
-const httpRequest = require("../helpers/http/request");
-const { IMAGGA } = require("../constants/constants");
+import httpRequest from "../helpers/http/request";
+import { IMAGGA } from "../constants";
+import { IDetection } from "../types/detection";
 
-let baseUri = `${IMAGGA.API_BASE_URL}/${IMAGGA.API_VERSION}`;
-
-const detectObjectsByImage = async (data, boundary) => {
-  const uri = `${baseUri}/${IMAGGA.DETECTION_RESOURCE_PATH}`;
+export const detectObjectsByImage = async (data, boundary): Promise<any> => {
+  const uri: string = generateApiUrl(IMAGGA.DETECTION_RESOURCE_PATH);
   try {
     console.log('Running detection on image.');
     const detections = await httpRequest('POST', uri, data, {
@@ -19,8 +18,8 @@ const detectObjectsByImage = async (data, boundary) => {
   }
 }
 
-const detectObjectsById = async (imageId) => {
-  const uri = `${baseUri}/${IMAGGA.DETECTION_RESOURCE_PATH}/${imageId}`;
+export const detectObjectsById = async (imageId): Promise<any> => {
+  const uri: string = generateApiUrl(`${IMAGGA.DETECTION_RESOURCE_PATH}/${imageId}`);
   try {
     console.log(`Running detection on image with id ${imageId}`);
     const detections = await httpRequest('GET', uri, null, {
@@ -34,8 +33,8 @@ const detectObjectsById = async (imageId) => {
   }
 }
 
-const uploadImage = async (data, boundary) => {
-  const uri = `${baseUri}/${IMAGGA.UPLOAD_RESOURCE_PATH}`;
+export const uploadImage = async (data, boundary): Promise<any> => {
+  const uri: string = generateApiUrl(IMAGGA.UPLOAD_RESOURCE_PATH);
   try {
     console.log('Uploading new image to Imagga.');
     const response = await httpRequest('POST', uri, data, {
@@ -43,7 +42,6 @@ const uploadImage = async (data, boundary) => {
       'Content-Type': `multipart/form-data; boundary=${boundary}`
     });
 
-    console.log('Upload response: ', JSON.stringify(response));
     return response;
   } catch (error) {
     console.error(`Error occurred during image upload: ${error}`);
@@ -53,9 +51,10 @@ const uploadImage = async (data, boundary) => {
 
 // This could potentially be improved.
 // Perhaps using Binary Search.
-const filterDetectionsByConfidence = (detections) => {
+export const filterDetectionsByConfidence = (detections: Array<IDetection>): Array<string> => {
+  const threshold: number = Number.parseFloat(IMAGGA.CONFIDENCE_THRESHOLD);
   return detections.reduce((tags, detection) => {
-    if (detection.confidence >= IMAGGA.CONFIDENCE_THRESHOLD) {
+    if (detection.confidence >= threshold) {
       tags.push(detection.tag.en);
     }
 
@@ -63,9 +62,7 @@ const filterDetectionsByConfidence = (detections) => {
   }, []);
 }
 
-module.exports = {
-  detectObjectsById,
-  detectObjectsByImage,
-  filterDetectionsByConfidence,
-  uploadImage
+const generateApiUrl = (resourcePath: string): string => {
+  const baseUri: string = `${IMAGGA.API_BASE_URL}/${IMAGGA.API_VERSION}`;
+  return `${baseUri}/${resourcePath}`;
 }
